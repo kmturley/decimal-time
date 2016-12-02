@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Decimal Time</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            font-weight: normal;
+        }
+        table {
+            width: 100%;
+        }
+        thead {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        td {
+            width: 33.33%;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://github.com/kmturley/decimal-time" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+    <img src="https://i.kinja-img.com/gawker-media/image/upload/s--1CRi6UjB--/c_scale,fl_progressive,q_80,w_800/17sjd898mauy8jpg.jpg" alt="Decimal time" width="500" />
+    <h1>Decimal Time</h1>
+    <p>Universal decimal calendar and time system for the internet age.</p>
+    <p>Conversions are as follows:</p>
+    <ul>
+        <li>12 months > 10 months</li>
+        <li>52 weeks > 36.5 weeks</li>
+        <li>28/31 days per month > 36/37 days per month</li>
+        <li>24 hours > 20 hours</li>
+        <li>60 minutes > 100 minutes</li>
+        <li>60 seconds > 100 seconds</li>
+    </ul>
+    <h2>History</h2>
+    <p>Inspired by the <a href="https://en.wikipedia.org/wiki/French_Republican_Calendar" target="_blank">French Republican Calendar system</a> which was used between 1793 and 1805 as part of decimalisation of currency and metrication.</p>
+    <h2>Demo</h2>
+    <table>
+        <thead>
+            <tr>
+                <td></td>
+                <td>UTC</td>
+                <td>Decimal</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Date String</td>
+                <td id="day"></td>
+                <td id="day_new"></td>
+            </tr>
+            <tr>
+                <td>Date</td>
+                <td id="date"></td>
+                <td id="date_new"></td>
+            </tr>
+            <tr>
+                <td>Time</td>
+                <td id="time"></td>
+                <td id="time_new"></td>
+            </tr>
+        </tbody>
+    </table>
+    <script src="components/decimal-time.js"></script>
+    <script>
+        var decimalTime = new DecimalTime(),
+            date = document.getElementById('date'),
+            date_new = document.getElementById('date_new'),
+            time = document.getElementById('time'),
+            time_new = document.getElementById('time_new'),
+            day = document.getElementById('day'),
+            day_new = document.getElementById('day_new'),
+            month = document.getElementById('month'),
+            month_new = document.getElementById('month_new');
+
+        console.log();
+
+        window.setInterval(function () {
+            var old = new Date(),
+                newDate = decimalTime.getDecimalDate(old),
+                newTime = decimalTime.getDecimalTime(old);
+            day.innerHTML = decimalTime.days[old.getDay()] + ' ' + decimalTime.months[old.getMonth()] + ' ' + old.getUTCDate();
+            day_new.innerHTML = decimalTime.days_new[newDate.num % 10] + ' ' + decimalTime.months_new[newDate.month - 1] + ' ' + newDate.day;
+            date.innerHTML = decimalTime.addZero(old.getUTCDate()) + '-' + decimalTime.addZero(old.getUTCMonth() + 1) + '-' + decimalTime.addZero(old.getUTCFullYear());
+            date_new.innerHTML = decimalTime.addZero(newDate.day) + '-' + decimalTime.addZero(newDate.month) + '-' + decimalTime.addZero(newDate.year);
+            time.innerHTML = decimalTime.addZero(old.getUTCHours()) + ':' + decimalTime.addZero(old.getUTCMinutes() + 1) + ':' + decimalTime.addZero(old.getUTCSeconds());
+            time_new.innerHTML = decimalTime.addZero(newTime.hours) + ':' + decimalTime.addZero(newTime.minutes) + ':' + decimalTime.addZero(newTime.seconds);
+        }, 100);
+    </script>
+</body>
+</html>
