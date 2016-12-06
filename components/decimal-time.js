@@ -13,11 +13,13 @@ var DecimalTime = function () {
         months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         months_new: ['Unamense', 'Duomense', 'Tresmense', 'Quatmense', 'Quintomense', 'Sexmense', 'Septmense', 'Octmense', 'Novmense', 'Decmense'],
         getDecimalDate: function (date) {
-            var oldDay = 1000 * 60 * 60 * 24,
-                startYear = new Date(Date.UTC(date.getUTCFullYear(), 0, 0)),
-                day = Math.floor((date - startYear) / oldDay),
+            var startYear = new Date(date),
+                day = 0,
                 num = 0,
                 month = 1;
+            startYear.setUTCMonth(0);
+            startYear.setUTCDate(1);
+            day = Math.floor((date - startYear) / 8.64e7);
             if (day > 36) { num += 36; month = 2; }
             if (day > 73) { num += 37; month = 3; }
             if (day > 109) { num += 36; month = 4; }
@@ -27,29 +29,32 @@ var DecimalTime = function () {
             if (day > 255) { num += 36; month = 8; }
             if (day > 292) { num += 37; month = 9; }
             if (day > 328) { num += 36; month = 10; }
-            return { day: day - num, month: month, year: date.getUTCFullYear(), num: num };
+            return {
+                day: day - num,
+                month: month,
+                year: date.getUTCFullYear(),
+                index: num
+            };
         },
         getDecimalTime: function (date) {
-            var oldDay = 1000 * 60 * 60 * 24,
-                newDay = 1000 * 100 * 100 * 20,
-                hours = 0,
-                minutes = 0,
-                seconds = 0,
-                milliseconds = 0,
-                startDay = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())),
-                delta = ((date - startDay) / oldDay) * newDay;
-            hours = Math.floor(delta / 10000000) % 20;
-            delta -= hours * 10000000;
-            minutes = Math.floor(delta / 100000) % 100;
-            delta -= minutes * 100000;
-            seconds = Math.floor(delta / 1000) % 100;
-            delta -= seconds * 1000;
-            milliseconds = Math.floor(delta) % 1000;
-            return { milliseconds: milliseconds, seconds: seconds, minutes: minutes, hours: hours };
+            var startDay = new Date(date),
+                decMs = Math.round((date - startDay.setUTCHours(0, 0, 0, 0)) / 8.64e7 * 2.0e8);
+            return {
+                hours: decMs / 10000000 | 0,
+                minutes: decMs % 10000000 / 100000 | 0,
+                seconds: decMs % 100000 / 1000 | 0,
+                milliseconds: decMs % 1000
+            };
         },
         addZero: function (num) {
             if (num < 10) { num = '0' + num; }
             return num;
+        },
+        formatUTCTime: function (date) {
+            return this.addZero(date.getUTCHours()) + ':' + this.addZero(date.getUTCMinutes()) + ':' + this.addZero(date.getUTCSeconds()) + '.' + ('00' + date.getUTCMilliseconds()).slice(-3);
+        },
+        formatDecimalTime: function (date) {
+            return this.addZero(date.hours) + ':' + this.addZero(date.minutes) + ':' + this.addZero(date.seconds) + '.' + ('00' + date.milliseconds).slice(-3);
         }
     };
     return module;

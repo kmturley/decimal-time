@@ -31,18 +31,6 @@
     <img src="https://i.kinja-img.com/gawker-media/image/upload/s--1CRi6UjB--/c_scale,fl_progressive,q_80,w_800/17sjd898mauy8jpg.jpg" alt="Decimal time" width="500" />
     <h1>Decimal Time</h1>
     <p>Universal decimal calendar and time system for the internet age.</p>
-    <p>Conversions are as follows:</p>
-    <ul>
-        <li>12 months > 10 months</li>
-        <li>52 weeks > 36.5 weeks</li>
-        <li>28/31 days per month > 36/37 days per month</li>
-        <li>24 hours > 20 hours</li>
-        <li>60 minutes > 100 minutes</li>
-        <li>60 seconds > 100 seconds</li>
-    </ul>
-    <h2>History</h2>
-    <p>Inspired by the <a href="https://en.wikipedia.org/wiki/French_Republican_Calendar" target="_blank">French Republican Calendar system</a> which was used between 1793 and 1805 as part of decimalisation of currency and metrication.</p>
-    <h2>Demo</h2>
     <table>
         <thead>
             <tr>
@@ -69,6 +57,18 @@
             </tr>
         </tbody>
     </table>
+    <h2>Conversions</h2>
+    <p>The relationship between old/new dates are as follows:</p>
+    <ul>
+        <li>12 months > 10 decimal months</li>
+        <li>52 weeks > 36.5 decimal weeks</li>
+        <li>28/31 days per month > 36/37 days per month</li>
+        <li>24 hours > 20 decimal hours</li>
+        <li>60 minutes > 100 decimal minutes</li>
+        <li>60 seconds > 100 decimal seconds</li>
+    </ul>
+    <h2>History</h2>
+    <p>Inspired by the <a href="https://en.wikipedia.org/wiki/French_Republican_Calendar" target="_blank">French Republican Calendar system</a> which was used between 1793 and 1805 as part of decimalisation of currency and metrication.</p>
     <script src="components/decimal-time.js"></script>
     <script>
         var decimalTime = new DecimalTime(),
@@ -81,18 +81,16 @@
             month = document.getElementById('month'),
             month_new = document.getElementById('month_new');
 
-        console.log();
-
         window.setInterval(function () {
             var old = new Date(),
                 newDate = decimalTime.getDecimalDate(old),
                 newTime = decimalTime.getDecimalTime(old);
             day.innerHTML = decimalTime.days[old.getDay()] + ' ' + decimalTime.months[old.getMonth()] + ' ' + old.getUTCDate();
-            day_new.innerHTML = decimalTime.days_new[newDate.num % 10] + ' ' + decimalTime.months_new[newDate.month - 1] + ' ' + newDate.day;
+            day_new.innerHTML = decimalTime.days_new[newDate.index % 10] + ' ' + decimalTime.months_new[newDate.month - 1] + ' ' + newDate.day;
             date.innerHTML = decimalTime.addZero(old.getUTCDate()) + '-' + decimalTime.addZero(old.getUTCMonth() + 1) + '-' + decimalTime.addZero(old.getUTCFullYear());
             date_new.innerHTML = decimalTime.addZero(newDate.day) + '-' + decimalTime.addZero(newDate.month) + '-' + decimalTime.addZero(newDate.year);
-            time.innerHTML = decimalTime.addZero(old.getUTCHours()) + ':' + decimalTime.addZero(old.getUTCMinutes() + 1) + ':' + decimalTime.addZero(old.getUTCSeconds());
-            time_new.innerHTML = decimalTime.addZero(newTime.hours) + ':' + decimalTime.addZero(newTime.minutes) + ':' + decimalTime.addZero(newTime.seconds);
+            time.innerHTML = decimalTime.formatUTCTime(old);
+            time_new.innerHTML = decimalTime.formatDecimalTime(newTime);
         }, 100);
     </script>
 </body>
