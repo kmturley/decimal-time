@@ -86,11 +86,11 @@ Date.prototype.addZero = function (num) {
 }
 
 Date.prototype.getUTCDateString = function () {
-    return this.addZero(this.getUTCDate()) + '-' + this.addZero(this.getUTCMonth()) + '-' + this.addZero(this.getUTCFullYear());
+    return this.addZero(this.getUTCDate()) + '-' + this.addZero(this.getUTCMonth() + 1) + '-' + this.addZero(this.getUTCFullYear());
 };
 
 Date.prototype.getDecimalDateString = function () {
-    return this.addZero(this.getDecimalDate()) + '-' + this.addZero(this.getDecimalMonth()) + '-' + this.addZero(this.getDecimalFullYear());
+    return this.addZero(this.getDecimalDate()) + '-' + this.addZero(this.getDecimalMonth() + 1) + '-' + this.addZero(this.getDecimalFullYear());
 };
 
 Date.prototype.getUTCTimeString = function () {
