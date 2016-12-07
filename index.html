@@ -71,8 +71,12 @@
     <p>Inspired by the <a href="https://en.wikipedia.org/wiki/French_Republican_Calendar" target="_blank">French Republican Calendar system</a> which was used between 1793 and 1805 as part of decimalisation of currency and metrication.</p>
     <script src="components/decimal-time.js"></script>
     <script>
-        var decimalTime = new DecimalTime(),
-            date = document.getElementById('date'),
+        var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            days_new = ['Unadie', 'Duodie', 'Tresdie', 'Quatdie', 'Quintodie', 'Sexdie', 'Septdie', 'Octdie', 'Novdie', 'Decdie'],
+            months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            months_new = ['Unamense', 'Duomense', 'Tresmense', 'Quatmense', 'Quintomense', 'Sexmense', 'Septmense', 'Octmense', 'Novmense', 'Decmense'];
+
+        var date = document.getElementById('date'),
             date_new = document.getElementById('date_new'),
             time = document.getElementById('time'),
             time_new = document.getElementById('time_new'),
@@ -82,15 +86,13 @@
             month_new = document.getElementById('month_new');
 
         window.setInterval(function () {
-            var old = new Date(),
-                newDate = decimalTime.getDecimalDate(old),
-                newTime = decimalTime.getDecimalTime(old);
-            day.innerHTML = decimalTime.days[old.getDay()] + ' ' + decimalTime.months[old.getMonth()] + ' ' + old.getUTCDate();
-            day_new.innerHTML = decimalTime.days_new[newDate.index % 10] + ' ' + decimalTime.months_new[newDate.month - 1] + ' ' + newDate.day;
-            date.innerHTML = decimalTime.addZero(old.getUTCDate()) + '-' + decimalTime.addZero(old.getUTCMonth() + 1) + '-' + decimalTime.addZero(old.getUTCFullYear());
-            date_new.innerHTML = decimalTime.addZero(newDate.day) + '-' + decimalTime.addZero(newDate.month) + '-' + decimalTime.addZero(newDate.year);
-            time.innerHTML = decimalTime.formatUTCTime(old);
-            time_new.innerHTML = decimalTime.formatDecimalTime(newTime);
+            var now = new Date();
+            day.innerHTML = days[now.getUTCDay()] + ' ' + months[now.getUTCMonth()] + ' ' + now.getUTCDate();
+            day_new.innerHTML = days_new[now.getDecimalDay()] + ' ' + months_new[now.getDecimalMonth()] + ' ' + now.getDecimalDate();
+            date.innerHTML = now.getUTCDateString();
+            date_new.innerHTML = now.getDecimalDateString();
+            time.innerHTML = now.getUTCTimeString();
+            time_new.innerHTML = now.getDecimalTimeString();
         }, 100);
     </script>
 </body>
