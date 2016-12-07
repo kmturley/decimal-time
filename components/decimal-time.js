@@ -4,53 +4,99 @@
  * by kmturley
  */
 
-var DecimalTime = function () {
-    'use strict';
+Date.prototype.getDecimalFullYear = function () {
+    return this.getUTCFullYear();
+};
 
-    var module = {
-        days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        days_new: ['Unadie', 'Duodie', 'Tresdie', 'Quatdie', 'Quintodie', 'Sexdie', 'Septdie', 'Octdie', 'Novdie', 'Decdie'],
-        months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        months_new: ['Unamense', 'Duomense', 'Tresmense', 'Quatmense', 'Quintomense', 'Sexmense', 'Septmense', 'Octmense', 'Novmense', 'Decmense'],
-        getDecimalDate: function (date) {
-            var oldDay = 1000 * 60 * 60 * 24,
-                startYear = new Date(Date.UTC(date.getUTCFullYear(), 0, 0)),
-                day = Math.floor((date - startYear) / oldDay),
-                num = 0,
-                month = 1;
-            if (day > 36) { num += 36; month = 2; }
-            if (day > 73) { num += 37; month = 3; }
-            if (day > 109) { num += 36; month = 4; }
-            if (day > 146) { num += 37; month = 5; }
-            if (day > 182) { num += 36; month = 6; }
-            if (day > 219) { num += 37; month = 7; }
-            if (day > 255) { num += 36; month = 8; }
-            if (day > 292) { num += 37; month = 9; }
-            if (day > 328) { num += 36; month = 10; }
-            return { day: day - num, month: month, year: date.getUTCFullYear(), num: num };
-        },
-        getDecimalTime: function (date) {
-            var oldDay = 1000 * 60 * 60 * 24,
-                newDay = 1000 * 100 * 100 * 20,
-                hours = 0,
-                minutes = 0,
-                seconds = 0,
-                milliseconds = 0,
-                startDay = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())),
-                delta = ((date - startDay) / oldDay) * newDay;
-            hours = Math.floor(delta / 10000000) % 20;
-            delta -= hours * 10000000;
-            minutes = Math.floor(delta / 100000) % 100;
-            delta -= minutes * 100000;
-            seconds = Math.floor(delta / 1000) % 100;
-            delta -= seconds * 1000;
-            milliseconds = Math.floor(delta) % 1000;
-            return { milliseconds: milliseconds, seconds: seconds, minutes: minutes, hours: hours };
-        },
-        addZero: function (num) {
-            if (num < 10) { num = '0' + num; }
-            return num;
-        }
-    };
-    return module;
+Date.prototype.getDecimalMonth = function () {
+    var startYear = new Date(this),
+        day = 0,
+        month = 0;
+    startYear.setUTCMonth(0);
+    startYear.setUTCDate(1);
+    day = Math.floor((this - startYear) / 8.64e7);
+    if (day > 36) { month = 1; }
+    if (day > 73) { month = 2; }
+    if (day > 109) { month = 3; }
+    if (day > 146) { month = 4; }
+    if (day > 182) { month = 5; }
+    if (day > 219) { month = 6; }
+    if (day > 255) { month = 7; }
+    if (day > 292) { month = 8; }
+    if (day > 328) { month = 9; }
+    return month;
+};
+
+Date.prototype.getDecimalDate = function () {
+    var startYear = new Date(this),
+        day = 0,
+        num = 0;
+    startYear.setUTCMonth(0);
+    startYear.setUTCDate(1);
+    day = Math.floor((this - startYear) / 8.64e7);
+    if (day > 36) { num += 36; }
+    if (day > 73) { num += 37; }
+    if (day > 109) { num += 36; }
+    if (day > 146) { num += 37; }
+    if (day > 182) { num += 36; }
+    if (day > 219) { num += 37; }
+    if (day > 255) { num += 36; }
+    if (day > 292) { num += 37; }
+    if (day > 328) { num += 36; }
+    return day - num;
+};
+
+Date.prototype.getDecimalDay = function () {
+    var startYear = new Date(this),
+        day = 0,
+        num = 0;
+    startYear.setUTCMonth(0);
+    startYear.setUTCDate(1);
+    day = Math.floor((this - startYear) / 8.64e7);
+    return day % 10;
+};
+
+Date.prototype.getDecimalHours = function () {
+    var startDay = new Date(this),
+        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / 8.64e7 * 2.0e8);
+    return decMs / 10000000 | 0;
+};
+
+Date.prototype.getDecimalMinutes = function () {
+    var startDay = new Date(this),
+        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / 8.64e7 * 2.0e8);
+    return decMs % 10000000 / 100000 | 0;
+};
+
+Date.prototype.getDecimalSeconds = function () {
+    var startDay = new Date(this),
+        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / 8.64e7 * 2.0e8);
+    return decMs % 100000 / 1000 | 0;
+};
+
+Date.prototype.getDecimalMilliseconds = function () {
+    var startDay = new Date(this),
+        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / 8.64e7 * 2.0e8);
+    return decMs % 1000;
+};
+
+Date.prototype.addZero = function (num) {
+    if (num < 10) { num = '0' + num; }
+    return num;
+}
+
+Date.prototype.getUTCDateString = function () {
+    return this.addZero(this.getUTCDate()) + '-' + this.addZero(this.getUTCMonth()) + '-' + this.addZero(this.getUTCFullYear());
+};
+
+Date.prototype.getDecimalDateString = function () {
+    return this.addZero(this.getDecimalDate()) + '-' + this.addZero(this.getDecimalMonth()) + '-' + this.addZero(this.getDecimalFullYear());
+};
+
+Date.prototype.getUTCTimeString = function () {
+    return this.addZero(this.getUTCHours()) + ':' + this.addZero(this.getUTCMinutes()) + ':' + this.addZero(this.getUTCSeconds()) + '.' + ('00' + this.getUTCMilliseconds()).slice(-3);
+};
+
+Date.prototype.getDecimalTimeString = function () {
+    return this.addZero(this.getDecimalHours()) + ':' + this.addZero(this.getDecimalMinutes()) + ':' + this.addZero(this.getDecimalSeconds()) + '.' + ('00' + this.getDecimalMilliseconds()).slice(-3);
 };

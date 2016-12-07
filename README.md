@@ -3,12 +3,12 @@
 Universal decimal calendar and time system for the internet age.
 
 Conversions are as follows:
-* 12 months > 10 months
-* 52 weeks > 36.5 weeks
+* 12 months > 10 decimal months
+* 52 weeks > 36.5 decimal weeks
 * 28/31 days per month > 36/37 days per month
-* 24 hours > 20 hours
-* 60 minutes > 100 minutes
-* 60 seconds > 100 seconds
+* 24 hours > 20 decimal hours
+* 60 minutes > 100 decimal minutes
+* 60 seconds > 100 decimal seconds
 
 ## History
 
