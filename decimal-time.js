@@ -94,9 +94,9 @@ Date.prototype.getDecimalDateString = function () {
 };
 
 Date.prototype.getUTCTimeString = function () {
-    return this.addZero(this.getUTCHours()) + ':' + this.addZero(this.getUTCMinutes()) + ':' + this.addZero(this.getUTCSeconds()) + '.' + ('00' + this.getUTCMilliseconds()).slice(-3);
+    return this.addZero(this.getUTCHours()) + ':' + this.addZero(this.getUTCMinutes()) + ':' + this.addZero(this.getUTCSeconds());
 };
 
 Date.prototype.getDecimalTimeString = function () {
-    return this.addZero(this.getDecimalHours()) + ':' + this.addZero(this.getDecimalMinutes()) + ':' + this.addZero(this.getDecimalSeconds()) + '.' + ('00' + this.getDecimalMilliseconds()).slice(-3);
+    return this.addZero(this.getDecimalHours()) + ':' + this.addZero(this.getDecimalMinutes()) + ':' + this.addZero(this.getDecimalSeconds());
 };
