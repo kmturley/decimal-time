@@ -16,9 +16,9 @@ Inspired by the [French Republican Calendar system](https://en.wikipedia.org/wik
 
 ## Tools
 
-    index.html                      --> Demo
-    components                      --> Components in different languages
-        decimal-time.js    --> JavaScript
+    examples/                       --> Examples comparing decimal to gregorian dates/times
+    decimal-time.js                 --> Library source code
+    index.html                      --> Homepage
 
 ## Contact
 

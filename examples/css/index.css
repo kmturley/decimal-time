@@ -42,8 +42,12 @@ li {
   width: 100%;
 }
 
+.example-dates {
+  height: 140px;
+}
+
 .example-clocks {
-  height: 200px;
+  height: 170px;
 }
 
 .example-calendars {

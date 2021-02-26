@@ -16,6 +16,10 @@
       width: 364px;
     }
 
+    .calendar .type {
+      margin-bottom: .5rem;
+    }
+
     .calendar .title,
     .calendar .month,
     .calendar .day {
@@ -46,8 +50,12 @@
 <body>
   <h2>Calendars</h2>
   <div class="calendars">
-    <div class="calendar decimal" id="decimal"></div>
-    <div class="calendar gregorian" id="gregorian"></div>
+    <div class="calendar decimal" id="decimal">
+      <div class="type">Decimal</div>
+    </div>
+    <div class="calendar gregorian" id="gregorian">
+      <div class="type">Gregorian</div>
+    </div>
   </div>
   <script>
     var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
