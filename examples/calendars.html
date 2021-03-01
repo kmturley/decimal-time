@@ -5,7 +5,7 @@
   <title>Decimal Time - Calendars</title>
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&Orbitron:400" rel="stylesheet" />
   <link href="./css/index.css" rel="stylesheet" />
   <style>
     .decimal {
@@ -32,11 +32,18 @@
 
     .calendar .label {
       background-color: aliceblue;
+      border-radius: .5rem;
+      font-family: 'Orbitron', sans-serif;
       margin: 0 .25rem .25rem 0;
       min-width: 2rem;
       padding: .5rem;
       text-align: center;
       top: 0;
+    }
+
+    .calendar .selected .label {
+      background-color: #222;
+      color: #fff;
     }
 
     @media (min-width: 480px) {
@@ -57,6 +64,7 @@
       <div class="type">Gregorian</div>
     </div>
   </div>
+  <script src="../decimal-time.js"></script>
   <script>
     var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         days_new = ['Unaday', 'Duoday', 'Tresday', 'Quatday', 'Quintoday', 'Sexday', 'Septday', 'Octday', 'Novday', 'Decday'],
@@ -64,6 +72,7 @@
         months_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         months_new = ['Unamonth', 'Duomonth', 'Tresmonth', 'Quatmonth', 'Quintomonth', 'Sexmonth', 'Septmonth', 'Octmonth', 'Novmonth', 'Decmonth'],
         months_new_short = ['Una', 'Duo', 'Tre', 'Qua', 'Qui', 'Sex', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var now = new Date();
 
     function daysInMonth(month) {
       return new Date(2019, month + 1, 0).getDate();
@@ -84,7 +93,11 @@
         var monthEl = createElement(monthsEl, 'month', month);
         var daysEl = createElement(monthEl, 'days');
         for (var j = 0; j < daysInMonth(i); j += 1) {
-          createElement(daysEl, 'day', j + 1);
+          var className = 'day';
+          if (now.getUTCMonth() === i && now.getUTCDate() - 1 === j) {
+            className += ' selected';
+          }
+          createElement(daysEl, className, j + 1);
         }
       });
       el.appendChild(fragment);
@@ -98,7 +111,11 @@
         var daysEl = createElement(monthEl, 'days');
         var even = i % 2;
         for (var j = 0; j < (even ? 37 : 36); j += 1) {
-          createElement(daysEl, 'day', j + 1);
+          var className = 'day';
+          if (now.getDecimalMonth() === i && now.getDecimalDate() - 1 === j) {
+            className += ' selected';
+          }
+          createElement(daysEl, className, j + 1);
         }
       });
       el.appendChild(fragment);
