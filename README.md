@@ -1,3 +1,5 @@
+![Decimal time](./examples/img/header.jpg)
+
 # decimal-time
 
 Universal decimal calendar and time system for the internet age.
