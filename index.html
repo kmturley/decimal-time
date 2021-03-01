@@ -1,99 +1,53 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>Decimal Time</title>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" />
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 20px;
-        }
-        h1, h2 {
-            font-weight: normal;
-        }
-        table {
-            width: 100%;
-        }
-        thead {
-            font-weight: bold;
-            text-decoration: underline;
-        }
-        td {
-            width: 33.33%;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <title>Decimal Time</title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&Orbitron:400" rel="stylesheet" />
+  <link href="./examples/css/index.css" rel="stylesheet" />
 </head>
 <body>
-    <a href="https://github.com/kmturley/decimal-time" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
-    <img src="https://i.kinja-img.com/gawker-media/image/upload/s--1CRi6UjB--/c_scale,fl_progressive,q_80,w_800/17sjd898mauy8jpg.jpg" alt="Decimal time" width="500" />
-    <h1>Decimal Time</h1>
-    <p>Universal decimal calendar and time system for the internet age.</p>
-    <table>
-        <thead>
-            <tr>
-                <td></td>
-                <td>UTC</td>
-                <td>Decimal</td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Date String</td>
-                <td id="day"></td>
-                <td id="day_new"></td>
-            </tr>
-            <tr>
-                <td>Date</td>
-                <td id="date"></td>
-                <td id="date_new"></td>
-            </tr>
-            <tr>
-                <td>Time</td>
-                <td id="time"></td>
-                <td id="time_new"></td>
-            </tr>
-        </tbody>
-    </table>
-    <h2>Conversions</h2>
-    <p>The relationship between old/new dates are as follows:</p>
-    <ul>
+  <a href="https://github.com/kmturley/decimal-time" target="_blank">
+    <img
+      style="position: absolute; top: 0; right: 0; border: 0;"
+      src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
+      alt="Fork me on GitHub"
+      data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" />
+  </a>
+  <img
+    alt="Decimal time"
+    class="header-image"
+    src="./examples/img/header.jpg" />
+  <div class="section">
+    <div class="section-inner">
+      <h1>Decimal Time</h1>
+      <p>Universal decimal calendar and time system for the internet age. Conversions are:</p>
+      <ul>
         <li>12 months > 10 decimal months</li>
         <li>52 weeks > 36.5 decimal weeks</li>
         <li>28/31 days per month > 36/37 days per month</li>
         <li>24 hours > 20 decimal hours</li>
         <li>60 minutes > 100 decimal minutes</li>
         <li>60 seconds > 100 decimal seconds</li>
-    </ul>
-    <h2>History</h2>
-    <p>Inspired by the <a href="https://en.wikipedia.org/wiki/French_Republican_Calendar" target="_blank">French Republican Calendar system</a> which was used between 1793 and 1805 as part of decimalisation of currency and metrication.</p>
-    <script src="components/decimal-time.js"></script>
-    <script>
-        var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-            days_new = ['Unaday', 'Duoday', 'Tresday', 'Quatday', 'Quintoday', 'Sexday', 'Septday', 'Octday', 'Novday', 'Decday'],
-            months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            months_new = ['Unamonth', 'Duomonth', 'Tresmonth', 'Quatmonth', 'Quintomonth', 'Sexmonth', 'Septmonth', 'Octmonth', 'Novmonth', 'Decmonth'];
-
-        var date = document.getElementById('date'),
-            date_new = document.getElementById('date_new'),
-            time = document.getElementById('time'),
-            time_new = document.getElementById('time_new'),
-            day = document.getElementById('day'),
-            day_new = document.getElementById('day_new'),
-            month = document.getElementById('month'),
-            month_new = document.getElementById('month_new');
-
-        window.setInterval(function () {
-            var now = new Date();
-            day.innerHTML = days[now.getUTCDay()] + ' ' + months[now.getUTCMonth()] + ' ' + now.getUTCDate();
-            day_new.innerHTML = days_new[now.getDecimalDay()] + ' ' + months_new[now.getDecimalMonth()] + ' ' + now.getDecimalDate();
-            date.innerHTML = now.getUTCDateString();
-            date_new.innerHTML = now.getDecimalDateString();
-            time.innerHTML = now.getUTCTimeString();
-            time_new.innerHTML = now.getDecimalTimeString();
-        }, 100);
-    </script>
+      </ul>
+    </div>
+    <div class="section-inner">
+      <h2>History</h2>
+      <p>Inspired by the <a href="https://en.wikipedia.org/wiki/French_Republican_Calendar" target="_blank">French
+        Republican Calendar system</a> which was used between 1793 and 1805 as part of decimalisation of currency and
+        metrication.</p>
+    </div>
+    <div class="section-inner example">
+      <iframe src="./examples/dates.html" class="example-dates"></iframe>
+    </div>
+    <div class="section-inner example">
+      <iframe src="./examples/clocks.html" class="example-clocks"></iframe>
+    </div>
+    <div class="section-inner example">
+      <iframe src="./examples/calendars.html" class="example-calendars"></iframe>
+    </div>
+  </div>
 </body>
 </html>
