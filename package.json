@@ -2,15 +2,21 @@
   "name": "decimal-time",
   "version": "0.0.1",
   "description": "Universal decimal calendar and time system for the internet age.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "lib/**/*"
+    "dist/**/*"
   ],
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "build": "tsc",
-    "test": "jest --config jestconfig.json"
+    "prepare" : "npm run build",
+    "prepublishOnly" : "npm test && npm run lint",
+    "preversion" : "npm run lint",
+    "postversion" : "git push && git push --tags",
+    "test": "jest --config jestconfig.json",
+    "version" : "npm run format && git add -A src"
   },
   "repository": {
     "type": "git",
