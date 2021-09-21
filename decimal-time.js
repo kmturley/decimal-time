@@ -61,25 +61,25 @@ Date.prototype.getDecimalDay = function () {
 
 Date.prototype.getDecimalHours = function () {
     var startDay = new Date(this),
-        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / gregorianDayMs * decimalDayMs);
+        decMs = ((this - startDay.setUTCHours(0, 0, 0, 0)) / gregorianDayMs * decimalDayMs);
     return decMs / 10000000 | 0;
 };
 
 Date.prototype.getDecimalMinutes = function () {
     var startDay = new Date(this),
-        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / gregorianDayMs * decimalDayMs);
+        decMs = ((this - startDay.setUTCHours(0, 0, 0, 0)) / gregorianDayMs * decimalDayMs);
     return decMs % 10000000 / 100000 | 0;
 };
 
 Date.prototype.getDecimalSeconds = function () {
     var startDay = new Date(this),
-        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / gregorianDayMs * decimalDayMs);
+        decMs = ((this - startDay.setUTCHours(0, 0, 0, 0)) / gregorianDayMs * decimalDayMs);
     return decMs % 100000 / 1000 | 0;
 };
 
 Date.prototype.getDecimalMilliseconds = function () {
     var startDay = new Date(this),
-        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / gregorianDayMs * decimalDayMs);
+        decMs = ((this - startDay.setUTCHours(0, 0, 0, 0)) / gregorianDayMs * decimalDayMs);
     return decMs % 1000;
 };
 
