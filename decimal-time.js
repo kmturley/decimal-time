@@ -4,6 +4,9 @@
  * by kmturley
  */
 
+var gregorianDayMs = 1000 * 60 * 60 * 24;
+var decimalDayMs = 1000 * 100 * 100 * 20;
+
 Date.prototype.getDecimalFullYear = function () {
     return this.getUTCFullYear();
 };
@@ -14,7 +17,7 @@ Date.prototype.getDecimalMonth = function () {
         month = 0;
     startYear.setUTCMonth(0);
     startYear.setUTCDate(1);
-    day = Math.floor((this - startYear) / 8.64e7);
+    day = Math.floor((this - startYear) / gregorianDayMs);
     if (day > 36) { month = 1; }
     if (day > 73) { month = 2; }
     if (day > 109) { month = 3; }
@@ -33,7 +36,7 @@ Date.prototype.getDecimalDate = function () {
         num = 0;
     startYear.setUTCMonth(0);
     startYear.setUTCDate(1);
-    day = Math.floor((this - startYear) / 8.64e7);
+    day = Math.floor((this - startYear) / gregorianDayMs);
     if (day > 36) { num += 36; }
     if (day > 73) { num += 37; }
     if (day > 109) { num += 36; }
@@ -52,31 +55,31 @@ Date.prototype.getDecimalDay = function () {
         num = 0;
     startYear.setUTCMonth(0);
     startYear.setUTCDate(1);
-    day = Math.floor((this - startYear) / 8.64e7);
+    day = Math.floor((this - startYear) / gregorianDayMs);
     return day % 10;
 };
 
 Date.prototype.getDecimalHours = function () {
     var startDay = new Date(this),
-        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / 8.64e7 * 2.0e8);
+        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / gregorianDayMs * decimalDayMs);
     return decMs / 10000000 | 0;
 };
 
 Date.prototype.getDecimalMinutes = function () {
     var startDay = new Date(this),
-        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / 8.64e7 * 2.0e8);
+        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / gregorianDayMs * decimalDayMs);
     return decMs % 10000000 / 100000 | 0;
 };
 
 Date.prototype.getDecimalSeconds = function () {
     var startDay = new Date(this),
-        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / 8.64e7 * 2.0e8);
+        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / gregorianDayMs * decimalDayMs);
     return decMs % 100000 / 1000 | 0;
 };
 
 Date.prototype.getDecimalMilliseconds = function () {
     var startDay = new Date(this),
-        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / 8.64e7 * 2.0e8);
+        decMs = Math.round((this - startDay.setUTCHours(0, 0, 0, 0)) / gregorianDayMs * decimalDayMs);
     return decMs % 1000;
 };
 
