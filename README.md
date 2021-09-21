@@ -8,7 +8,7 @@ Conversions are as follows:
 * 12 months > 10 decimal months
 * 52 weeks > 36.5 decimal weeks
 * 28/31 days per month > 36/37 days per month
-* 24 hours > 20 decimal hours
+* 24 hours > 10 decimal hours
 * 60 minutes > 100 decimal minutes
 * 60 seconds > 100 decimal seconds
 
