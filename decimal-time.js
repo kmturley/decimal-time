@@ -5,7 +5,7 @@
  */
 
 var gregorianDayMs = 1000 * 60 * 60 * 24;
-var decimalDayMs = 1000 * 100 * 100 * 20;
+var decimalDayMs = 1000 * 100 * 100 * 10;
 
 Date.prototype.getDecimalFullYear = function () {
     return this.getUTCFullYear();
