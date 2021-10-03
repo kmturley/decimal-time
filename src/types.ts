@@ -2,6 +2,4 @@ interface DateDecimalInterface {
   date: Date;
 }
 
-export {
-  DateDecimalInterface
-};
+export { DateDecimalInterface };
