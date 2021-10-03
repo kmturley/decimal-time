@@ -67,19 +67,19 @@ class DateDecimal implements DateDecimalInterface {
   getDecimalHours(): number {
     const startDay: Date = new Date(this.date);
     const decMs: number = ((this.date.getTime() - startDay.setUTCHours(0, 0, 0, 0)) / this.gregorianDayMs * this.decimalDayMs);
-    return decMs / 10000000 | 0;
+    return (decMs / 10000000) || 0;
   }
 
   getDecimalMinutes(): number {
     const startDay: Date = new Date(this.date);
     const decMs: number = ((this.date.getTime() - startDay.setUTCHours(0, 0, 0, 0)) / this.gregorianDayMs * this.decimalDayMs);
-    return decMs % 10000000 / 100000 | 0;
+    return (decMs % 10000000 / 100000) || 0;
   }
 
   getDecimalSeconds(): number {
     const startDay: Date = new Date(this.date);
     const decMs: number = ((this.date.getTime() - startDay.setUTCHours(0, 0, 0, 0)) / this.gregorianDayMs * this.decimalDayMs);
-    return decMs % 100000 / 1000 | 0;
+    return (decMs % 100000 / 1000) || 0;
   }
 
   getDecimalMilliseconds(): number {
