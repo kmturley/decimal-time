@@ -5,12 +5,8 @@ class DateDecimal implements DateDecimalInterface {
   private gregorianDayMs: number = 1000 * 60 * 60 * 24;
   private decimalDayMs: number = 1000 * 100 * 100 * 10;
 
-  constructor(dateString?: string) {
-    if (dateString) {
-      this.date = new Date(dateString);
-    } else {
-      this.date = new Date();
-    }
+  constructor(...args: any[]) {
+    this.date = new Date(...args as ConstructorParameters<typeof Date>);
   }
 
   getDecimalFullYear(): number {
