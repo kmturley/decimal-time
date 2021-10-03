@@ -19,7 +19,7 @@ class DateDecimal implements DateDecimalInterface {
     let month: number = 0;
     startYear.setMonth(0);
     startYear.setDate(1);
-    day = Math.floor((this.date.getTime() - startYear.getTime()) / this.gregorianDayMs);
+    day = (this.date.getTime() - startYear.getTime()) / this.gregorianDayMs;
     if (day > 36) {
       month = 1;
     }
@@ -55,8 +55,8 @@ class DateDecimal implements DateDecimalInterface {
     let day: number = 0;
     let num: number = 0;
     startYear.setMonth(0);
-    startYear.setDate(1);
-    day = Math.floor((this.date.getTime() - startYear.getTime()) / this.gregorianDayMs);
+    startYear.setDate(0);
+    day = (this.date.getTime() - startYear.getTime()) / this.gregorianDayMs;
     if (day > 36) {
       num += 36;
     }
@@ -92,39 +92,39 @@ class DateDecimal implements DateDecimalInterface {
     let day: number = 0;
     startYear.setMonth(0);
     startYear.setDate(1);
-    day = Math.floor((this.date.getTime() - startYear.getTime()) / this.gregorianDayMs);
-    return day % 10;
+    day = (this.date.getTime() - startYear.getTime()) / this.gregorianDayMs;
+    return Math.floor(day % 10) || 0;
   }
 
   getDecimalHours(): number {
     const startDay: Date = new Date(this.date);
     const decMs: number =
       ((this.date.getTime() - startDay.setHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
-    return decMs / 10000000 || 0;
+    return Math.floor(decMs / 10000000) || 0;
   }
 
   getDecimalMinutes(): number {
     const startDay: Date = new Date(this.date);
     const decMs: number =
       ((this.date.getTime() - startDay.setHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
-    return (decMs % 10000000) / 100000 || 0;
+    return Math.floor((decMs % 10000000) / 100000) || 0;
   }
 
   getDecimalSeconds(): number {
     const startDay: Date = new Date(this.date);
     const decMs: number =
       ((this.date.getTime() - startDay.setHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
-    return (decMs % 100000) / 1000 || 0;
+    return Math.floor((decMs % 100000) / 1000) || 0;
   }
 
   getDecimalMilliseconds(): number {
     const startDay: Date = new Date(this.date);
     const decMs: number =
       ((this.date.getTime() - startDay.setHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
-    return decMs % 1000;
+    return Math.floor(decMs % 1000) || 0;
   }
 
-  addZero(num: number): string {
+  formatNum(num: number): string {
     if (num < 10) {
       return '0' + num;
     }
@@ -133,41 +133,41 @@ class DateDecimal implements DateDecimalInterface {
 
   getDateString(): string {
     return (
-      this.addZero(this.date.getDate()) +
+      this.formatNum(this.date.getDate()) +
       '-' +
-      this.addZero(this.date.getMonth() + 1) +
+      this.formatNum(this.date.getMonth() + 1) +
       '-' +
-      this.addZero(this.date.getFullYear())
+      this.formatNum(this.date.getFullYear())
     );
   }
 
   getDecimalDateString(): string {
     return (
-      this.addZero(this.getDecimalDate()) +
+      this.formatNum(this.getDecimalDate()) +
       '-' +
-      this.addZero(this.getDecimalMonth() + 1) +
+      this.formatNum(this.getDecimalMonth() + 1) +
       '-' +
-      this.addZero(this.getDecimalFullYear())
+      this.formatNum(this.getDecimalFullYear())
     );
   }
 
   getTimeString(): string {
     return (
-      this.addZero(this.date.getHours()) +
+      this.formatNum(this.date.getHours()) +
       ':' +
-      this.addZero(this.date.getMinutes()) +
+      this.formatNum(this.date.getMinutes()) +
       ':' +
-      this.addZero(this.date.getSeconds())
+      this.formatNum(this.date.getSeconds())
     );
   }
 
   getDecimalTimeString(): string {
     return (
-      this.addZero(this.getDecimalHours()) +
+      this.formatNum(this.getDecimalHours()) +
       ':' +
-      this.addZero(this.getDecimalMinutes()) +
+      this.formatNum(this.getDecimalMinutes()) +
       ':' +
-      this.addZero(this.getDecimalSeconds())
+      this.formatNum(this.getDecimalSeconds())
     );
   }
 }
