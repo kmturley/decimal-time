@@ -10,15 +10,15 @@ class DateDecimal implements DateDecimalInterface {
   }
 
   getDecimalFullYear(): number {
-    return this.date.getUTCFullYear();
+    return this.date.getFullYear();
   }
 
   getDecimalMonth(): number {
     const startYear: Date = new Date(this.date);
     let day: number = 0;
     let month: number = 0;
-    startYear.setUTCMonth(0);
-    startYear.setUTCDate(1);
+    startYear.setMonth(0);
+    startYear.setDate(1);
     day = Math.floor((this.date.getTime() - startYear.getTime()) / this.gregorianDayMs);
     if (day > 36) {
       month = 1;
@@ -54,8 +54,8 @@ class DateDecimal implements DateDecimalInterface {
     const startYear: Date = new Date(this.date);
     let day: number = 0;
     let num: number = 0;
-    startYear.setUTCMonth(0);
-    startYear.setUTCDate(1);
+    startYear.setMonth(0);
+    startYear.setDate(1);
     day = Math.floor((this.date.getTime() - startYear.getTime()) / this.gregorianDayMs);
     if (day > 36) {
       num += 36;
@@ -90,8 +90,8 @@ class DateDecimal implements DateDecimalInterface {
   getDecimalDay(): number {
     const startYear: Date = new Date(this.date);
     let day: number = 0;
-    startYear.setUTCMonth(0);
-    startYear.setUTCDate(1);
+    startYear.setMonth(0);
+    startYear.setDate(1);
     day = Math.floor((this.date.getTime() - startYear.getTime()) / this.gregorianDayMs);
     return day % 10;
   }
@@ -99,28 +99,28 @@ class DateDecimal implements DateDecimalInterface {
   getDecimalHours(): number {
     const startDay: Date = new Date(this.date);
     const decMs: number =
-      ((this.date.getTime() - startDay.setUTCHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
+      ((this.date.getTime() - startDay.setHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
     return decMs / 10000000 || 0;
   }
 
   getDecimalMinutes(): number {
     const startDay: Date = new Date(this.date);
     const decMs: number =
-      ((this.date.getTime() - startDay.setUTCHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
+      ((this.date.getTime() - startDay.setHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
     return (decMs % 10000000) / 100000 || 0;
   }
 
   getDecimalSeconds(): number {
     const startDay: Date = new Date(this.date);
     const decMs: number =
-      ((this.date.getTime() - startDay.setUTCHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
+      ((this.date.getTime() - startDay.setHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
     return (decMs % 100000) / 1000 || 0;
   }
 
   getDecimalMilliseconds(): number {
     const startDay: Date = new Date(this.date);
     const decMs: number =
-      ((this.date.getTime() - startDay.setUTCHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
+      ((this.date.getTime() - startDay.setHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
     return decMs % 1000;
   }
 
@@ -131,13 +131,13 @@ class DateDecimal implements DateDecimalInterface {
     return String(num);
   }
 
-  getUTCDateString(): string {
+  getDateString(): string {
     return (
-      this.addZero(this.date.getUTCDate()) +
+      this.addZero(this.date.getDate()) +
       '-' +
-      this.addZero(this.date.getUTCMonth() + 1) +
+      this.addZero(this.date.getMonth() + 1) +
       '-' +
-      this.addZero(this.date.getUTCFullYear())
+      this.addZero(this.date.getFullYear())
     );
   }
 
@@ -151,13 +151,13 @@ class DateDecimal implements DateDecimalInterface {
     );
   }
 
-  getUTCTimeString(): string {
+  getTimeString(): string {
     return (
-      this.addZero(this.date.getUTCHours()) +
+      this.addZero(this.date.getHours()) +
       ':' +
-      this.addZero(this.date.getUTCMinutes()) +
+      this.addZero(this.date.getMinutes()) +
       ':' +
-      this.addZero(this.date.getUTCSeconds())
+      this.addZero(this.date.getSeconds())
     );
   }
 
