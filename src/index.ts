@@ -1,1 +1,7 @@
-export const Greeter = (name: string) => `Hello ${name}`;
+export * from './classes';
+export * from './types';
+
+// Used for local development
+import { DateDecimal } from './classes';
+const today: DateDecimal = new DateDecimal();
+console.log(today.date.toString());
