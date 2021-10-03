@@ -6,7 +6,7 @@ class DateDecimal implements DateDecimalInterface {
   private decimalDayMs: number = 1000 * 100 * 100 * 10;
 
   constructor(...args: any[]) {
-    this.date = new Date(...args as ConstructorParameters<typeof Date>);
+    this.date = new Date(...(args as ConstructorParameters<typeof Date>));
   }
 
   getDecimalFullYear(): number {
