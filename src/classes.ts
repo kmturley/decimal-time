@@ -47,7 +47,7 @@ class DateDecimal implements DateDecimalInterface {
     if (day > 328) {
       month = 9;
     }
-    return month;
+    return Math.floor(month);
   }
 
   getDecimalDate(): number {
@@ -84,7 +84,7 @@ class DateDecimal implements DateDecimalInterface {
     if (day > 328) {
       num += 36;
     }
-    return day - num;
+    return Math.floor(day - num);
   }
 
   getDecimalDay(): number {
