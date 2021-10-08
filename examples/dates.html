@@ -56,12 +56,15 @@
         months_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         months_new = ['Unamonth', 'Duomonth', 'Tresmonth', 'Quatmonth', 'Quintomonth', 'Sexmonth', 'Septmonth', 'Octmonth', 'Novmonth', 'Decmonth'],
         months_new_short = ['Una', 'Duo', 'Tre', 'Qua', 'Qui', 'Sex', 'Sep', 'Oct', 'Nov', 'Dec'];
+
     var decimal = document.getElementById('decimal');
     var gregorian = document.getElementById('gregorian');
+
+    console.log('dates', new DateDecimal().getDecimalDateString());
+    console.log('dates', new DateDecimal().getDateString());
+
     setInterval(function () {
       var now = new DateDecimal();
-      // decimal.innerHTML = now.getDecimalDateString();
-      // gregorian.innerHTML = now.getDateString();
       decimal.innerHTML = days_new[now.getDecimalDay()] + ' ' + now.getDecimalDate() + ' ' +  months_new[now.getDecimalMonth()]
       gregorian.innerHTML = days[now.date.getDay()] + ' ' + now.date.getDate() + ' ' + months[now.date.getMonth()];
     }, 100);

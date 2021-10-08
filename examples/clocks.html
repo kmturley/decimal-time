@@ -52,6 +52,10 @@
 
     var decimal = document.getElementById('decimal');
     var gregorian = document.getElementById('gregorian');
+
+    console.log('clocks', new DateDecimal().getDecimalTimeString());
+    console.log('clocks', new DateDecimal().getTimeString());
+
     setInterval(function () {
       var now = new DateDecimal();
       decimal.innerHTML = now.getDecimalTimeString();
