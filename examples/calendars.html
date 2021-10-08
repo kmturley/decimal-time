@@ -64,15 +64,17 @@
       <div class="type">Gregorian</div>
     </div>
   </div>
-  <script src="../decimal-time.js"></script>
-  <script>
+  <script type="module" src="../dist.browser/classes.js"></script>
+  <script type="module">
+    import { DateDecimal } from '../dist.browser/classes.js';
+
     var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         days_new = ['Unaday', 'Duoday', 'Tresday', 'Quatday', 'Quintoday', 'Sexday', 'Septday', 'Octday', 'Novday', 'Decday'],
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         months_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         months_new = ['Unamonth', 'Duomonth', 'Tresmonth', 'Quatmonth', 'Quintomonth', 'Sexmonth', 'Septmonth', 'Octmonth', 'Novmonth', 'Decmonth'],
         months_new_short = ['Una', 'Duo', 'Tre', 'Qua', 'Qui', 'Sex', 'Sep', 'Oct', 'Nov', 'Dec'];
-    var now = new Date();
+    var now = new DateDecimal();
 
     function daysInMonth(month) {
       return new Date(2019, month + 1, 0).getDate();
@@ -94,7 +96,7 @@
         var daysEl = createElement(monthEl, 'days');
         for (var j = 0; j < daysInMonth(i); j += 1) {
           var className = 'day';
-          if (now.getUTCMonth() === i && now.getUTCDate() - 1 === j) {
+          if (now.date.getMonth() === i && now.date.getDate() - 1 === j) {
             className += ' selected';
           }
           createElement(daysEl, className, j + 1);
