@@ -46,14 +46,16 @@
       <div class="type">Gregorian</div>
     </div>
   </div>
-  <script src="../decimal-time.js"></script>
-  <script>
+  <script type="module" src="../dist.browser/classes.js"></script>
+  <script type="module">
+    import { DateDecimal } from '../dist.browser/classes.js';
+
     var decimal = document.getElementById('decimal');
     var gregorian = document.getElementById('gregorian');
     setInterval(function () {
-      var now = new Date();
+      var now = new DateDecimal();
       decimal.innerHTML = now.getDecimalTimeString();
-      gregorian.innerHTML = now.getUTCTimeString();
+      gregorian.innerHTML = now.getTimeString();
     }, 100);
   </script>
 </body>

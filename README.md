@@ -1,26 +1,45 @@
-![Decimal time](./examples/img/header.jpg)
-
 # decimal-time
+![Test](https://github.com/kmturley/decimal-time/workflows/Test/badge.svg)
 
-Universal decimal calendar and time system for the internet age.
+Universal decimal calendar and time system for the internet age using:
 
-Conversions are as follows:
-* 12 months > 10 decimal months
-* 52 weeks > 36.5 decimal weeks
-* 28/31 days per month > 36/37 days per month
-* 24 hours > 10 decimal hours
-* 60 minutes > 100 decimal minutes
-* 60 seconds > 100 decimal seconds
+* NodeJS 12.x
+* TypeScript 4.x
 
-## History
 
-Inspired by the [French Republican Calendar system](https://en.wikipedia.org/wiki/French_Republican_Calendar) which was used between 1793 and 1805 as part of decimalisation of currency and metrication.
+## Installation
 
-## Tools
+To install the common package, run the command:
 
-    examples/                       --> Examples comparing decimal to gregorian dates/times
-    decimal-time.js                 --> Library source code
-    index.html                      --> Homepage
+    npm install decimal-time
+
+
+## Usage
+
+Import the package using:
+
+    import { DateDecimal } from 'decimal-time';
+
+Then use the available methods as normal:
+
+    const today = new DateDecimal();
+    today.getDateString();
+    today.getDecimalDateString();
+    today.getTimeString();
+    today.getDecimalTimeString();
+
+
+## Deployment
+
+Release an updated version on npm by simply creating a version tag:
+
+    npm version patch
+    git push && git push origin --tags
+
+Then publish to npm using:
+
+    npm publish
+
 
 ## Contact
 
