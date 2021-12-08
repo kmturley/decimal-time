@@ -7,8 +7,8 @@ const dateEnd: string = '2000-12-31';
 const dateTimeStart: string = dateStart + timeStart;
 const dateTimeEnd: string = dateEnd + timeEnd;
 
-test('Timezone PST', () => {
-  expect(new DateDecimal().date.getTimezoneOffset()).toBe(480);
+test('Timezone UTC or PST', () => {
+  expect([0, 480]).toContain(new DateDecimal().date.getTimezoneOffset());
 });
 
 // 365 for a leap year, otherwise 364
