@@ -13,7 +13,7 @@
     }
 
     .gregorian {
-      width: 364px;
+      width: 365px;
     }
 
     .calendar .type {
@@ -39,6 +39,15 @@
       padding: .5rem;
       text-align: center;
       top: 0;
+    }
+
+    .calendar .header  .label {
+      
+    }
+
+    .calendar .blank .label {
+      background-color: #fff;
+      color: #fff;
     }
 
     .calendar .selected .label {
@@ -69,15 +78,29 @@
     import { DateDecimal } from '../dist.browser/classes.js';
 
     var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        days_short = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         days_new = ['Unaday', 'Duoday', 'Tresday', 'Quatday', 'Quintoday', 'Sexday', 'Septday', 'Octday', 'Novday', 'Decday'],
+        days_new_short = ['Una', 'Duo', 'Tre', 'Qua', 'Qui', 'Sex', 'Sep', 'Oct', 'Nov', 'Dec'],
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         months_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         months_new = ['Unamonth', 'Duomonth', 'Tresmonth', 'Quatmonth', 'Quintomonth', 'Sexmonth', 'Septmonth', 'Octmonth', 'Novmonth', 'Decmonth'],
         months_new_short = ['Una', 'Duo', 'Tre', 'Qua', 'Qui', 'Sex', 'Sep', 'Oct', 'Nov', 'Dec'];
     var now = new DateDecimal();
 
+    function dayOfMonth(month, day) {
+      return new Date(new Date().getFullYear(), month, day).getUTCDay();
+    }
+
+    function dayOfMonthDecimal(month, day) {
+      return new DateDecimal(new Date().getFullYear(), month, day).getDecimalDay();
+    }
+
     function daysInMonth(month) {
-      return new Date(2019, month + 1, 0).getDate();
+      return new Date(new Date().getFullYear(), month, 0).getUTCDate();
+    }
+
+    function daysInMonthDecimal(month) {
+      return new DateDecimal(new Date().getFullYear(), month, 0).getDecimalDate();
     }
 
     function createElement(parent, classname, value) {
@@ -94,9 +117,19 @@
       months.forEach(function(month, i) {
         var monthEl = createElement(monthsEl, 'month', month);
         var daysEl = createElement(monthEl, 'days');
+        // Create day of the week labels
+        for (var l = 0; l < days_short.length; l += 1) {
+          createElement(daysEl, 'day header', days_short[l]);
+        }
         for (var j = 0; j < daysInMonth(i); j += 1) {
+          // Fill in blank days of week
+          if (j === 0) {
+            for (var k = 0; k < dayOfMonth(i, j + 1); k += 1) {
+              createElement(daysEl, 'day blank', k + 1);
+            }
+          }
           var className = 'day';
-          if (now.date.getMonth() === i && now.date.getDate() - 1 === j) {
+          if (now.date.getMonth() === i && now.date.getDate() === j + 1) {
             className += ' selected';
           }
           createElement(daysEl, className, j + 1);
@@ -112,9 +145,20 @@
         var monthEl = createElement(monthsEl, 'month', month);
         var daysEl = createElement(monthEl, 'days');
         var even = i % 2;
-        for (var j = 0; j < (even ? 37 : 36); j += 1) {
+        // Create day of the week labels
+        for (var l = 0; l < days_new_short.length; l += 1) {
+          createElement(daysEl, 'day header', days_new_short[l]);
+        }
+        console.log('month', i, daysInMonthDecimal(i));
+        for (var j = 0; j < daysInMonthDecimal(i); j += 1) {
+          // Fill in blank days of week
+          if (j === 0) {
+            for (var k = 0; k < dayOfMonthDecimal(i, j + 1); k += 1) {
+              createElement(daysEl, 'day blank', k + 1);
+            }
+          }
           var className = 'day';
-          if (now.getDecimalMonth() === i && now.getDecimalDate() - 1 === j) {
+          if (now.getDecimalMonth() === i && now.getDecimalDate() === j + 1) {
             className += ' selected';
           }
           createElement(daysEl, className, j + 1);

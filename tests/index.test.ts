@@ -1,117 +1,98 @@
 import { DateDecimal } from '../src/index';
 
-test('Date is today', () => {
-  const date: Date = new Date();
-  const dateDecimal: DateDecimal = new DateDecimal();
-  expect(dateDecimal).toBeDefined();
-  expect(dateDecimal.date).toBeDefined();
-  expect(dateDecimal.date.getDate()).toEqual(date.getDate());
-  expect(dateDecimal.date.getMonth()).toEqual(date.getMonth());
-  expect(dateDecimal.date.getFullYear()).toEqual(date.getFullYear());
+const timeStart: string = 'T00:00:00.000Z';
+const timeEnd: string = 'T23:59:59.999Z';
+const dateStart: string = '2000-01-01';
+const dateEnd: string = '2000-12-31';
+const dateTimeStart: string = dateStart + timeStart;
+const dateTimeEnd: string = dateEnd + timeEnd;
+
+test('Timezone PST', () => {
+  expect(new DateDecimal().date.getTimezoneOffset()).toBe(480);
 });
 
-test('Date is in the past', () => {
-  const date: Date = new Date(2000, 0, 1, 0, 0, 0);
-  const dateDecimal: DateDecimal = new DateDecimal(2000, 0, 1, 0, 0, 0);
-  expect(dateDecimal).toBeDefined();
-  expect(dateDecimal.date).toBeDefined();
-  expect(dateDecimal.date.getDate()).toEqual(date.getDate());
-  expect(dateDecimal.date.getMonth()).toEqual(date.getMonth());
-  expect(dateDecimal.date.getFullYear()).toEqual(date.getFullYear());
+// 365 for a leap year, otherwise 364
+// 2000 was a leap year
+test('Day of year, between 0 and 365', () => {
+  expect(new DateDecimal(dateTimeStart).getDayOfYear()).toEqual(0);
+  expect(new DateDecimal('2000-02-06' + timeStart).getDayOfYear()).toEqual(36);
+  expect(new DateDecimal('2000-02-07' + timeStart).getDayOfYear()).toEqual(37);
+  expect(new DateDecimal(dateTimeEnd).getDayOfYear()).toEqual(365);
 });
 
-test('Year start', () => {
-  expect(new DateDecimal(2000, 0, 1, 0, 0, 0).getDecimalFullYear()).toEqual(2000);
+// 37 for one month in a leap year, otherwise 35 or 36
+// 2000 was a leap year
+test('Decimal day of the month, between 0 and 37', () => {
+  expect(new DateDecimal(dateTimeStart).getDecimalDate()).toEqual(0);
+  expect(new DateDecimal('2000-02-06' + timeStart).getDecimalDate()).toEqual(36);
+  expect(new DateDecimal('2000-02-07' + timeStart).getDecimalDate()).toEqual(1);
+  expect(new DateDecimal('2000-02-08' + timeStart).getDecimalDate()).toEqual(2);
+  expect(new DateDecimal(dateTimeEnd).getDecimalDate()).toEqual(37);
 });
 
-test('Year end', () => {
-  expect(new DateDecimal(1999, 11, 31, 23, 59, 59, 999).getDecimalFullYear()).toEqual(1999);
+test('Decimal day of the week, between 0 and 9', () => {
+  expect(new DateDecimal('1970-01-01' + timeStart).getDecimalDay()).toEqual(0);
+  expect(new DateDecimal(dateTimeStart).getDecimalDay()).toEqual(7);
+  expect(new DateDecimal('2000-01-02' + timeStart).getDecimalDay()).toEqual(8);
+  expect(new DateDecimal('2000-01-03' + timeStart).getDecimalDay()).toEqual(9);
+  expect(new DateDecimal('2000-01-04' + timeStart).getDecimalDay()).toEqual(0);
+  expect(new DateDecimal(dateTimeEnd).getDecimalDay()).toEqual(2);
 });
 
-test('Month start', () => {
-  expect(new DateDecimal(2000, 0, 1, 0, 0, 0).getDecimalMonth()).toEqual(0);
+test('Decimal year, between 1000 and 9999', () => {
+  expect(new DateDecimal('1999-01-01' + timeStart).getDecimalYear()).toEqual(1999);
+  expect(new DateDecimal(dateTimeStart).getDecimalYear()).toEqual(2000);
+  expect(new DateDecimal('2001-01-01' + timeStart).getDecimalYear()).toEqual(2001);
+  expect(new DateDecimal(dateTimeEnd).getDecimalYear()).toEqual(2000);
 });
 
-test('Month end', () => {
-  expect(new DateDecimal(1999, 11, 31, 23, 59, 59, 999).getDecimalMonth()).toEqual(9);
+test('Decimal hours, between 0 and 9', () => {
+  expect(new DateDecimal(dateTimeStart).getDecimalHours()).toEqual(0);
+  expect(new DateDecimal(dateTimeEnd).getDecimalHours()).toEqual(9);
 });
 
-test('Date start', () => {
-  expect(new DateDecimal(2000, 0, 1, 0, 0, 0).getDecimalDate()).toEqual(1);
+test('Decimal milliseconds, between 0 and 999', () => {
+  expect(new DateDecimal(dateTimeStart).getDecimalMilliseconds()).toEqual(0);
+  expect(new DateDecimal(dateTimeEnd).getDecimalMilliseconds()).toEqual(999);
 });
 
-test('Date end', () => {
-  expect(new DateDecimal(1999, 11, 31, 23, 59, 59, 999).getDecimalDate()).toEqual(37);
+test('Decimal minutes, between 0 and 99', () => {
+  expect(new DateDecimal(dateTimeStart).getDecimalMinutes()).toEqual(0);
+  expect(new DateDecimal(dateTimeEnd).getDecimalMinutes()).toEqual(99);
 });
 
-test('Day start', () => {
-  expect(new DateDecimal(2000, 0, 1, 0, 0, 0).getDecimalDay()).toEqual(0);
+test('Decimal month, between 0 and 9', () => {
+  expect(new DateDecimal(dateTimeStart).getDecimalMonth()).toEqual(0);
+  expect(new DateDecimal(dateTimeEnd).getDecimalMonth()).toEqual(9);
 });
 
-test('Day end', () => {
-  expect(new DateDecimal(2000, 0, 10, 0, 0, 0).getDecimalDay()).toEqual(9);
+test('Decimal seconds, between 0 and 99', () => {
+  expect(new DateDecimal(dateTimeStart).getDecimalSeconds()).toEqual(0);
+  expect(new DateDecimal(dateTimeEnd).getDecimalSeconds()).toEqual(99);
 });
 
-test('Hours start', () => {
-  expect(new DateDecimal(2000, 0, 1, 0, 0, 0).getDecimalHours()).toEqual(0);
+test('Decimal time, milliseconds since the Unix Epoch', () => {
+  expect(new DateDecimal(dateTimeStart).getDecimalTime()).toEqual(1095700000000);
+  expect(new DateDecimal(dateTimeEnd).getDecimalTime()).toEqual(1132200000000);
 });
 
-test('Hours end', () => {
-  expect(new DateDecimal(1999, 11, 31, 23, 59, 59, 999).getDecimalHours()).toEqual(9);
+test('Decimal date string, returns DD/MM/YYYY or YYYY-MM-DD', () => {
+  expect(new DateDecimal(dateTimeStart).toDecimalDateString()).toEqual('01/01/2000');
+  expect(new DateDecimal(dateTimeStart).toDecimalDateString('ISO')).toEqual('2000-01-01');
+  expect(new DateDecimal(dateTimeEnd).toDecimalDateString()).toEqual('38/10/2000');
+  expect(new DateDecimal(dateTimeEnd).toDecimalDateString('ISO')).toEqual('2000-10-38');
 });
 
-test('Minutes start', () => {
-  expect(new DateDecimal(2000, 0, 1, 0, 0, 0).getDecimalMinutes()).toEqual(0);
+test('Decimal time string, returns HH:MM:SS or THH:MM:SS.000Z', () => {
+  expect(new DateDecimal(dateTimeStart).toDecimalTimeString()).toEqual('00:00:00');
+  expect(new DateDecimal(dateTimeStart).toDecimalTimeString('ISO')).toEqual('T00:00:00.000Z');
+  expect(new DateDecimal(dateTimeEnd).toDecimalTimeString()).toEqual('09:99:99');
+  expect(new DateDecimal(dateTimeEnd).toDecimalTimeString('ISO')).toEqual('T09:99:99.999Z');
 });
 
-test('Minutes end', () => {
-  expect(new DateDecimal(1999, 11, 31, 23, 59, 59, 999).getDecimalMinutes()).toEqual(99);
-});
-
-test('Seconds start', () => {
-  expect(new DateDecimal(2000, 0, 1, 0, 0, 0).getDecimalSeconds()).toEqual(0);
-});
-
-test('Seconds end', () => {
-  expect(new DateDecimal(1999, 11, 31, 23, 59, 59, 999).getDecimalSeconds()).toEqual(99);
-});
-
-test('Milliseconds start', () => {
-  expect(new DateDecimal(2000, 0, 1, 0, 0, 0).getDecimalMilliseconds()).toEqual(0);
-});
-
-test('Milliseconds end', () => {
-  // TODO figure out why this is 998 and not 999
-  expect(new DateDecimal(1999, 11, 31, 23, 59, 59, 999).getDecimalMilliseconds()).toEqual(998);
-});
-
-test('Format number', () => {
-  expect(new DateDecimal().formatNum(0)).toEqual('00');
-  expect(new DateDecimal().formatNum(9)).toEqual('09');
-  expect(new DateDecimal().formatNum(10)).toEqual('10');
-});
-
-test('Date string start', () => {
-  expect(new DateDecimal(2000, 0, 1, 0, 0, 0).getDateString()).toEqual('01-01-2000');
-});
-
-test('Date string end', () => {
-  // TODO this should match the country format
-  expect(new DateDecimal(1999, 11, 31, 23, 59, 59, 999).getDateString()).toEqual('31-12-1999');
-});
-
-test('Decimal date string start', () => {
-  expect(new DateDecimal(2000, 0, 1, 0, 0, 0).getDecimalDateString()).toEqual('01-01-2000');
-});
-
-test('Decimal date string end', () => {
-  expect(new DateDecimal(1999, 11, 31, 23, 59, 59, 999).getDecimalDateString()).toEqual('37-10-1999');
-});
-
-test('Decimal time string start', () => {
-  expect(new DateDecimal(2000, 0, 1, 0, 0, 0).getDecimalTimeString()).toEqual('00:00:00');
-});
-
-test('Decimal time string end', () => {
-  expect(new DateDecimal(1999, 11, 31, 23, 59, 59, 999).getDecimalTimeString()).toEqual('09:99:99');
+test('Decimal datetime string, returns DD/MM/YYYY HH:MM:SS or  YYYY-MM-DDTHH:MM:SS.000Z', () => {
+  expect(new DateDecimal(dateTimeStart).toDecimalString()).toEqual('01/01/2000 00:00:00');
+  expect(new DateDecimal(dateTimeStart).toDecimalString('ISO')).toEqual('2000-01-01T00:00:00.000Z');
+  expect(new DateDecimal(dateTimeEnd).toDecimalString()).toEqual('38/10/2000 09:99:99');
+  expect(new DateDecimal(dateTimeEnd).toDecimalString('ISO')).toEqual('2000-10-38T09:99:99.999Z');
 });

@@ -60,8 +60,8 @@
     var decimal = document.getElementById('decimal');
     var gregorian = document.getElementById('gregorian');
 
-    console.log('dates', new DateDecimal().getDecimalDateString());
-    console.log('dates', new DateDecimal().getDateString());
+    console.log('dates', new DateDecimal().toDecimalDateString());
+    console.log('dates', new DateDecimal().date.toLocaleDateString());
 
     setInterval(function () {
       var now = new DateDecimal();

@@ -2,4 +2,8 @@ interface DateDecimalInterface {
   date: Date;
 }
 
-export { DateDecimalInterface };
+interface DateDecimalFormats {
+  ISO: string;
+}
+
+export { DateDecimalInterface, DateDecimalFormats };
