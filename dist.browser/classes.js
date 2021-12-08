@@ -17,52 +17,58 @@ var DateDecimal = /** @class */ (function () {
         this.decimalDayMs = 1000 * 100 * 100 * 10;
         this.date = new (Date.bind.apply(Date, __spreadArray([void 0], args, false)))();
     }
-    DateDecimal.prototype.getDecimalFullYear = function () {
-        return this.date.getFullYear();
+    DateDecimal.prototype.isLeapYear = function () {
+        return new Date(this.date.getUTCFullYear(), 1, 29).getDate() === 29;
     };
-    DateDecimal.prototype.getDecimalMonth = function () {
-        var startYear = new Date(this.date);
-        var day = 0;
-        var month = 0;
-        startYear.setMonth(0);
-        startYear.setDate(1);
-        day = (this.date.getTime() - startYear.getTime()) / this.gregorianDayMs;
-        if (day > 36) {
-            month = 1;
+    DateDecimal.prototype.formatNum = function (num, prefix, prefix2) {
+        if (prefix === void 0) { prefix = '0'; }
+        if (prefix2 === void 0) { prefix2 = ''; }
+        if (num < 10) {
+            return prefix + num;
         }
-        if (day > 73) {
-            month = 2;
+        else if (num < 100) {
+            return prefix2 + num;
         }
-        if (day > 109) {
-            month = 3;
-        }
-        if (day > 146) {
-            month = 4;
-        }
-        if (day > 182) {
-            month = 5;
-        }
-        if (day > 219) {
-            month = 6;
-        }
-        if (day > 255) {
-            month = 7;
-        }
-        if (day > 292) {
-            month = 8;
-        }
-        if (day > 328) {
-            month = 9;
-        }
-        return month;
+        return String(num);
     };
+    DateDecimal.prototype.formatDateString = function (date, month, year, separator) {
+        return "" + this.formatNum(date) + separator + this.formatNum(month) + separator + this.formatNum(year);
+    };
+    DateDecimal.prototype.getDecimalMillisecondsElapsed = function () {
+        var dateCopy = new Date(this.date.getTime());
+        dateCopy.setUTCHours(0, 0, 0, 0);
+        return Math.ceil(((this.date.getTime() - dateCopy.getTime()) / this.gregorianDayMs) * this.decimalDayMs);
+    };
+    /**
+     * Day of the year, between 0 and 365
+     * 365 for leap years, otherwise 364
+     * @returns {number}
+     */
+    DateDecimal.prototype.getDayOfYear = function () {
+        var dateCopy = new Date(this.date.getTime());
+        dateCopy.setUTCMonth(0, 1);
+        dateCopy.setUTCHours(0, 0, 0, 0);
+        return Math.floor((this.date.getTime() - dateCopy.getTime()) / this.gregorianDayMs);
+    };
+    /**
+     * Days of a month, between 36 and 38
+     * 38 for last month in a leap year, otherwise 36 even and 37 odd
+     * @returns {number}
+     */
+    DateDecimal.prototype.getDecimalDaysOfMonth = function () {
+        if (this.isLeapYear() && this.getDecimalMonth() === 9)
+            return 38;
+        return this.getDecimalMonth() % 2 === 0 ? 36 : 37;
+    };
+    /**
+     * Decimal day of the month, between 0 and 38
+     * 38 for last month in a leap year, otherwise 36 even and 37 odd
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getDate
+     * @returns {number}
+     */
     DateDecimal.prototype.getDecimalDate = function () {
-        var startYear = new Date(this.date);
-        var day = 0;
+        var day = this.getDayOfYear();
         var num = 0;
-        startYear.setMonth(0);
-        startYear.setDate(0);
-        day = (this.date.getTime() - startYear.getTime()) / this.gregorianDayMs;
         if (day > 36) {
             num += 36;
         }
@@ -92,67 +98,126 @@ var DateDecimal = /** @class */ (function () {
         }
         return Math.floor(day - num);
     };
+    /**
+     * Decimal day of the week, between 0 and 9
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getDay
+     * @returns {number}
+     */
     DateDecimal.prototype.getDecimalDay = function () {
-        var startYear = new Date(this.date);
-        var day = 0;
-        startYear.setMonth(0);
-        startYear.setDate(1);
-        day = (this.date.getTime() - startYear.getTime()) / this.gregorianDayMs;
-        return Math.floor(day % 10) || 0;
+        return Math.floor(this.date.getTime() / this.gregorianDayMs) % 10;
     };
+    /**
+     * Year, between 1000 and 9999
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getFullYear
+     * @returns {number}
+     */
+    DateDecimal.prototype.getDecimalYear = function () {
+        return this.date.getUTCFullYear();
+    };
+    /**
+     * Decimal hour, between 0 and 9
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getHours
+     * @returns {number}
+     */
     DateDecimal.prototype.getDecimalHours = function () {
-        var startDay = new Date(this.date);
-        var decMs = ((this.date.getTime() - startDay.setHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
-        return Math.floor(decMs / 10000000) || 0;
+        return Math.floor(this.getDecimalMillisecondsElapsed() / 10000000) || 0;
     };
-    DateDecimal.prototype.getDecimalMinutes = function () {
-        var startDay = new Date(this.date);
-        var decMs = ((this.date.getTime() - startDay.setHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
-        return Math.floor((decMs % 10000000) / 100000) || 0;
-    };
-    DateDecimal.prototype.getDecimalSeconds = function () {
-        var startDay = new Date(this.date);
-        var decMs = ((this.date.getTime() - startDay.setHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
-        return Math.floor((decMs % 100000) / 1000) || 0;
-    };
+    /**
+     * Decimal milliseconds, between 0 and 999
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getMilliseconds
+     * @returns {number}
+     */
     DateDecimal.prototype.getDecimalMilliseconds = function () {
-        var startDay = new Date(this.date);
-        var decMs = ((this.date.getTime() - startDay.setHours(0, 0, 0, 0)) / this.gregorianDayMs) * this.decimalDayMs;
-        return Math.floor(decMs % 1000) || 0;
+        return Math.floor(this.getDecimalMillisecondsElapsed() % 1000) || 0;
     };
-    DateDecimal.prototype.formatNum = function (num) {
-        if (num < 10) {
-            return '0' + num;
+    /**
+     * Decimal minutes, between 0 and 99
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getMinutes
+     * @returns {number}
+     */
+    DateDecimal.prototype.getDecimalMinutes = function () {
+        return Math.floor((this.getDecimalMillisecondsElapsed() % 10000000) / 100000) || 0;
+    };
+    /**
+     * Decimal month, between 0 and 9
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getMonth
+     * @returns {number}
+     */
+    DateDecimal.prototype.getDecimalMonth = function () {
+        var day = this.getDayOfYear();
+        var month = 0;
+        if (day > 36) {
+            month = 1;
         }
-        return String(num);
+        if (day > 73) {
+            month = 2;
+        }
+        if (day > 109) {
+            month = 3;
+        }
+        if (day > 146) {
+            month = 4;
+        }
+        if (day > 182) {
+            month = 5;
+        }
+        if (day > 219) {
+            month = 6;
+        }
+        if (day > 255) {
+            month = 7;
+        }
+        if (day > 292) {
+            month = 8;
+        }
+        if (day > 328) {
+            month = 9;
+        }
+        return Math.floor(month);
     };
-    DateDecimal.prototype.getDateString = function () {
-        return (this.formatNum(this.date.getDate()) +
-            '-' +
-            this.formatNum(this.date.getMonth() + 1) +
-            '-' +
-            this.formatNum(this.date.getFullYear()));
+    /**
+     * Decimal seconds, between 0 and 99
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getSeconds
+     * @returns {number}
+     */
+    DateDecimal.prototype.getDecimalSeconds = function () {
+        return Math.floor((this.getDecimalMillisecondsElapsed() % 100000) / 1000) || 0;
     };
-    DateDecimal.prototype.getDecimalDateString = function () {
-        return (this.formatNum(this.getDecimalDate()) +
-            '-' +
-            this.formatNum(this.getDecimalMonth() + 1) +
-            '-' +
-            this.formatNum(this.getDecimalFullYear()));
+    /**
+     * Decimal time, milliseconds since the Unix Epoch
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime
+     * @returns {number}
+     */
+    DateDecimal.prototype.getDecimalTime = function () {
+        return Math.floor(this.date.getTime() / this.gregorianDayMs) * this.decimalDayMs;
     };
-    DateDecimal.prototype.getTimeString = function () {
-        return (this.formatNum(this.date.getHours()) +
-            ':' +
-            this.formatNum(this.date.getMinutes()) +
-            ':' +
-            this.formatNum(this.date.getSeconds()));
+    /**
+     * Decimal date string, returns DD/MM/YYYY or YYYY-MM-DD
+     * @returns {string}
+     */
+    DateDecimal.prototype.toDecimalDateString = function (format) {
+        if (format === 'ISO')
+            return this.formatDateString(this.date.getUTCFullYear(), this.getDecimalMonth() + 1, this.getDecimalDate() + 1, '-');
+        return this.formatDateString(this.getDecimalDate() + 1, this.getDecimalMonth() + 1, this.date.getUTCFullYear(), '/');
     };
-    DateDecimal.prototype.getDecimalTimeString = function () {
-        return (this.formatNum(this.getDecimalHours()) +
-            ':' +
-            this.formatNum(this.getDecimalMinutes()) +
-            ':' +
-            this.formatNum(this.getDecimalSeconds()));
+    /**
+     * Decimal time string, returns HH:MM:SS or THH:MM:SS.000Z
+     * @returns {string}
+     */
+    DateDecimal.prototype.toDecimalTimeString = function (format) {
+        var timeString = this.formatDateString(this.getDecimalHours(), this.getDecimalMinutes(), this.getDecimalSeconds(), ':');
+        if (format === 'ISO')
+            return 'T' + timeString + '.' + this.formatNum(this.getDecimalMilliseconds(), '00', '0') + 'Z';
+        return timeString;
+    };
+    /**
+     * Decimal datetime string, returns DD/MM/YYYY HH:MM:SS or  YYYY-MM-DDTHH:MM:SS.000Z
+     * @returns {string}
+     */
+    DateDecimal.prototype.toDecimalString = function (format) {
+        if (format === 'ISO')
+            return this.toDecimalDateString(format) + this.toDecimalTimeString(format);
+        return this.toDecimalDateString() + ' ' + this.toDecimalTimeString();
     };
     return DateDecimal;
 }());
