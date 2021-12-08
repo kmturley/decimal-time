@@ -20,7 +20,15 @@ test('Day of year, between 0 and 365', () => {
   expect(new DateDecimal(dateTimeEnd).getDayOfYear()).toEqual(365);
 });
 
-// 37 for one month in a leap year, otherwise 35 or 36
+// 38 for last month in a leap year, otherwise 36 even and 37 odd
+// 2000 was a leap year
+test('Days of a month, between 36 and 38', () => {
+  expect(new DateDecimal(dateTimeStart).getDecimalDaysOfMonth()).toEqual(36);
+  expect(new DateDecimal('2000-02-10' + timeStart).getDecimalDaysOfMonth()).toEqual(37);
+  expect(new DateDecimal(dateTimeEnd).getDecimalDaysOfMonth()).toEqual(38);
+});
+
+// 38 for last month in a leap year, otherwise 36 even and 37 odd
 // 2000 was a leap year
 test('Decimal day of the month, between 0 and 37', () => {
   expect(new DateDecimal(dateTimeStart).getDecimalDate()).toEqual(0);

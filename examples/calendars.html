@@ -100,7 +100,7 @@
     }
 
     function daysInMonthDecimal(month) {
-      return new DateDecimal(new Date().getFullYear(), month, 0).getDecimalDate();
+      return new DateDecimal(new Date().getFullYear(), month, 1).getDecimalDaysOfMonth();
     }
 
     function createElement(parent, classname, value) {

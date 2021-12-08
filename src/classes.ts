@@ -9,6 +9,10 @@ class DateDecimal implements DateDecimalInterface {
     this.date = new Date(...(args as ConstructorParameters<typeof Date>));
   }
 
+  private isLeapYear(): boolean {
+    return new Date(this.date.getUTCFullYear(), 1, 29).getDate() === 29;
+  }
+
   private formatNum(num: number, prefix: string = '0', prefix2: string = ''): string {
     if (num < 10) {
       return prefix + num;
@@ -41,8 +45,18 @@ class DateDecimal implements DateDecimalInterface {
   }
 
   /**
-   * Decimal day of the month, between 0 and 37
-   * 37 for one month in a leap year, otherwise 35 or 36
+   * Days of a month, between 36 and 38
+   * 38 for last month in a leap year, otherwise 36 even and 37 odd
+   * @returns {number}
+   */
+  getDecimalDaysOfMonth(): number {
+    if (this.isLeapYear() && this.getDecimalMonth() === 9) return 38;
+    return this.getDecimalMonth() % 2 === 0 ? 36 : 37;
+  }
+
+  /**
+   * Decimal day of the month, between 0 and 38
+   * 38 for last month in a leap year, otherwise 36 even and 37 odd
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getDate
    * @returns {number}
    */
