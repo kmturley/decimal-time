@@ -23,10 +23,14 @@ Import the package using:
 Then use the available methods as normal:
 
     const today = new DateDecimal();
-    today.getDateString();
-    today.getDecimalDateString();
-    today.getTimeString();
-    today.getDecimalTimeString();
+    console.log(today.toDecimalString());
+
+
+## Testing
+
+Run the command:
+
+    npm run test
 
 
 ## Deployment

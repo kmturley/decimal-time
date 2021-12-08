@@ -53,13 +53,13 @@
     var decimal = document.getElementById('decimal');
     var gregorian = document.getElementById('gregorian');
 
-    console.log('clocks', new DateDecimal().getDecimalTimeString());
-    console.log('clocks', new DateDecimal().getTimeString());
+    console.log('clocks', new DateDecimal().toDecimalTimeString());
+    console.log('clocks', new DateDecimal().date.toTimeString().split(' ')[0]);
 
     setInterval(function () {
       var now = new DateDecimal();
-      decimal.innerHTML = now.getDecimalTimeString();
-      gregorian.innerHTML = now.getTimeString();
+      decimal.innerHTML = now.toDecimalTimeString();
+      gregorian.innerHTML = now.date.toTimeString().split(' ')[0];
     }, 100);
   </script>
 </body>
